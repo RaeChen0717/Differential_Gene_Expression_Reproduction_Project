@@ -1,4 +1,3 @@
-# Differential_Gene_Expression_Reproduction_Project
 # Differential Gene Expression (DGE) Comparison Summary
 
 This project compares **three pipelines** for RNA-seq DGE analysis in *Drosophila*:  
