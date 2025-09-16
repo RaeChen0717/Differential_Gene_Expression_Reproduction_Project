@@ -77,7 +77,7 @@ Focus is on DEG overlap, correlation of log2FC values, and analysis of “sig-on
 
 ---
 
-## 🔎 Diagnostics & Interpretation
+## Diagnostics & Interpretation
 
 1. **Strong log2FC correlations** across all comparisons:
    - Tutorial vs Published: r ≈ 0.91  
