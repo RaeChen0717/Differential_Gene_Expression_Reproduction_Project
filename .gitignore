@@ -1,0 +1,7 @@
+*.DS_Store
+bam/
+counts/
+fastq_1516/
+Kallisto_out_ZT10/
+.Rhistory
+.Rproj.user/
