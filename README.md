@@ -94,7 +94,77 @@ Focus is on DEG overlap, correlation of log2FC values, and analysis of “sig-on
    - Disagreement comes from **significance thresholding**, not opposite biological conclusions.  
 
 ---
+# Tutorial vs edgeR Comparison Outputs
 
+This folder contains all results from the **Tutorial vs edgeR differential expression analysis (DGE) comparison**.  
+Both statistical summaries and visualizations are included.  
+
+---
+
+## 📊 Summary File
+- **Tutorial_vs_edgeR_Summary.xlsx**  
+  Main Excel summary containing:
+  - Fisher’s exact test results (UP/DOWN sets)  
+  - Overlap sizes and Jaccard indices  
+  - Intersect / only gene lists  
+  - Diagnostics summary (MAE, RMSE, bias, sign disagreement rate, sig-only q-value analysis, etc.)  
+
+---
+
+## 🔍 Volcano Plot
+- **volcano_Tutorial_mark_edgeR.png**  
+  Volcano plot based on Tutorial results, highlighting overlap with edgeR:  
+  - **Grey** = Not significant in Tutorial  
+  - **Red** = Significant only in Tutorial or edgeR  
+  - **Green** = Significant in both Tutorial and edgeR  
+
+---
+
+## 📈 Correlation Analysis
+- **Tutorial_vs_edgeR_logFC_correlation.png**  
+  Scatter plot of log2 fold changes (logFC) between Tutorial and edgeR.  
+  Includes linear regression fit and correlation statistics.  
+
+- **Tutorial_vs_edgeR_correlation_stats.txt**  
+  Text file with detailed correlation metrics:  
+  - Pearson correlation (r, CI, p-value)  
+  - Spearman correlation (ρ, p-value)  
+
+---
+
+## ⚠️ Disagreement Table
+- **pairs_disagree_Tutorial_vs_edgeR.csv**  
+  List of genes where **Tutorial and edgeR disagree in logFC direction**.  
+  Columns include FBgn, logFC/qval from both datasets, category, and delta logFC.  
+
+---
+
+## 🔵 Venn Diagrams
+- **venn_up.png**  
+  Venn diagram showing overlap of **up-regulated genes**.  
+- **venn_down.png**  
+  Venn diagram showing overlap of **down-regulated genes**.  
+
+---
+
+## 📊 Sig-only Gene Diagnostics
+To investigate why overlap is below 100%, we analyzed “sig-only” genes.  
+
+- **sigOnly_edgeR_in_Tutorial_cdf.png**  
+  CDF plot of q-values for edgeR-only genes in Tutorial.  
+- **sigOnly_edgeR_in_Tutorial_hist.png**  
+  Histogram of –log10(q) values for edgeR-only genes in Tutorial.  
+
+- **sigOnly_Tutorial_in_edgeR_cdf.png**  
+  CDF plot of q-values for Tutorial-only genes in edgeR.  
+- **sigOnly_Tutorial_in_edgeR_hist.png**  
+  Histogram of –log10(q) values for Tutorial-only genes in edgeR.  
+
+> These plots show that most sig-only genes fall **near the FDR cutoff boundary (q ≈ 0.05)**, suggesting that discrepancies arise primarily from threshold effects rather than large differences in effect size or direction.  
+
+---
+
+✅ Together, these results provide a comprehensive comparison between Tutorial and edgeR pipelines in identifying differentially expressed genes (DEGs).
 ## Conclusion
 
 - Despite moderate Venn overlap (<85%), the **biological conclusions are consistent**.  
