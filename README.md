@@ -14,12 +14,12 @@ Focus is on DEG overlap, correlation of log2FC values, and analysis of “sig-on
 ## 1. Tutorial vs Published
 
 **DEG overlap (from Venn diagrams):**
-- UP: **133 shared**, 93 Tutorial-only, 83 Published-only → ~59% overlap  
-- DOWN: **98 shared**, 60 Tutorial-only, 73 Published-only → ~57% overlap  
+- UP: **76 shared**, 37 Tutorial-only, 52 Published-only → ~50% overlap  
+- DOWN: **57 shared**, 56 Tutorial-only, 31 Published-only → ~40% overlap  
 
 **Log2FC correlation (Tutorial_vs_Published_correlation_stats.txt):**
-- Pearson r = **0.91**, 95% CI [0.902–0.910]  
-- Spearman ρ = **0.95**  
+- Pearson r = **0.76**, 95% CI [0.7513617-0.7701223]  
+- Spearman ρ = **0.90**  
 - Both p < 2.2e-16 → strong agreement  
 
 **Sig-only diagnostics (CDF/Hist plots):**
@@ -80,7 +80,7 @@ Focus is on DEG overlap, correlation of log2FC values, and analysis of “sig-on
 ## Diagnostics & Interpretation
 
 1. **Strong log2FC correlations** across all comparisons:
-   - Tutorial vs Published: r ≈ 0.91  
+   - Tutorial vs Published: r ≈ 0.76  
    - Tutorial vs edgeR: r ≈ 0.91  
    - edgeR vs Published: r ≈ 0.994  
    → All pipelines estimate fold changes consistently.  
