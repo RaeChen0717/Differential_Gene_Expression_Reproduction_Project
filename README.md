@@ -25,7 +25,7 @@ Focus is on DEG overlap, correlation of log2FC values, and analysis of “sig-on
 **Sig-only diagnostics (CDF/Hist plots):**
 - Tutorial-only DEGs: many q-values in Published ≈ 0.05–0.1  
 - Published-only DEGs: similar, cluster near cutoff  
-➡️ Suggests differences come mainly from **borderline q-values**, not direction disagreement.  
+  Suggests differences come mainly from **borderline q-values**, not direction disagreement.  
 
 **Volcano plot (volcano_Tutorial_mark_Published.png):**  
 - Shared DEGs (green) dominate in both tails  
@@ -47,7 +47,7 @@ Focus is on DEG overlap, correlation of log2FC values, and analysis of “sig-on
 **Sig-only diagnostics (Hist/CDF):**
 - EdgeR-only DEGs: n=67, **73.1%** have q < 0.1 in Tutorial  
 - Tutorial-only DEGs: n=38, **92.1%** have q < 0.1 in edgeR  
-➡️ Again, differences are **borderline significance calls**, not direction flips.  
+  Again, differences are **borderline significance calls**, not direction flips.  
 
 **Volcano plot (volcano_Tutorial_mark_edgeR.png):**  
 - Shared DEGs clearly beyond thresholds  
@@ -69,7 +69,7 @@ Focus is on DEG overlap, correlation of log2FC values, and analysis of “sig-on
 **Sig-only diagnostics (Hist/CDF):**
 - EdgeR-only DEGs: majority have Published q between 0.05–0.1  
 - Published-only DEGs: similar pattern  
-➡️ Most “sig-only” genes are **borderline threshold artifacts**.  
+  Most “sig-only” genes are **borderline threshold artifacts**.  
 
 **Volcano plot (volcano_edgeR_mark_Published.png):**  
 - Shared DEGs dominate  
@@ -95,7 +95,7 @@ Focus is on DEG overlap, correlation of log2FC values, and analysis of “sig-on
 
 ---
 
-## ✅ Conclusion
+## Conclusion
 
 - Despite moderate Venn overlap (<85%), the **biological conclusions are consistent**.  
 - Differences are mainly **statistical cutoff artifacts**, not conflicting fold-change directions.  
