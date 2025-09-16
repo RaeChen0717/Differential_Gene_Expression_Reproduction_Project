@@ -1,82 +1,105 @@
-# Differential Gene Expression (DGE) Comparison Summary
+# DGE Comparison Summary
 
-This project compares **three pipelines** for RNA-seq DGE analysis in *Drosophila*:  
+This report evaluates the consistency of differential gene expression (DGE) analysis across three datasets/pipelines:
 
-1. **Tutorial pipeline (kallisto + sleuth)**  
-2. **edgeR pipeline (HISAT2 + featureCounts + edgeR)**  
-3. **Published paper pipeline (HISAT2 + HTSeq + edgeR)**  
+- **Tutorial pipeline (sleuth-based)**
+- **edgeR re-analysis**
+- **Published dataset (Van Swinderen et al., eLife 2023)**
 
----
-
-## Results Overview
-
-| Comparison               | Overlap of Significant DEGs | Pearson r | Spearman ρ | Interpretation |
-|--------------------------|-----------------------------|-----------|------------|----------------|
-| **Tutorial vs edgeR**    | ~70%                        | 0.91      | 0.96       | Reasonably high correlation. Most DEGs consistent, but ~30% differ due to filtering and model choice. |
-| **edgeR vs Published**   | ~66%                        | 0.99      | 1.00       | Almost perfect correlation. Confirms edgeR analysis reproduces published results faithfully. |
-| **Tutorial vs Published**| ~59%                        | 0.76      | 0.90       | Moderate overlap and lower correlation. Tutorial pipeline diverges more because it uses pseudo-alignment and sleuth’s Wald test. |
+Thresholds used: **FDR < 0.05** and **|log2FC| > 0.58**.  
+Focus is on DEG overlap, correlation of log2FC values, and analysis of “sig-only” genes.
 
 ---
 
-## Explanations
+## 1. Tutorial vs Published
 
-### 1. **Tutorial vs edgeR**
-- **Correlation**: High (Pearson 0.91, Spearman 0.96).  
-- **Overlap**: ~70% of DEGs shared.  
-- **Differences**:  
-  - Sleuth uses bootstrap-based variance estimation, edgeR uses negative binomial GLM.  
-  - Different filtering of low-expression genes (sleuth more lenient, edgeR stricter).  
-  - Some borderline genes pass threshold in one but not the other.  
+**DEG overlap (from Venn diagrams):**
+- UP: **133 shared**, 93 Tutorial-only, 83 Published-only → ~59% overlap  
+- DOWN: **98 shared**, 60 Tutorial-only, 73 Published-only → ~57% overlap  
 
-**Volcano Plot**: shows many shared DEGs, but also "sig only in Tutorial" or "sig only in edgeR" points. These reflect model-dependent borderline calls.
+**Log2FC correlation (Tutorial_vs_Published_correlation_stats.txt):**
+- Pearson r = **0.91**, 95% CI [0.902–0.910]  
+- Spearman ρ = **0.95**  
+- Both p < 2.2e-16 → strong agreement  
 
----
+**Sig-only diagnostics (CDF/Hist plots):**
+- Tutorial-only DEGs: many q-values in Published ≈ 0.05–0.1  
+- Published-only DEGs: similar, cluster near cutoff  
+➡️ Suggests differences come mainly from **borderline q-values**, not direction disagreement.  
 
-### 2. **edgeR vs Published**
-- **Correlation**: Almost perfect (Pearson 0.99, Spearman 1.00).  
-- **Overlap**: ~66% DEGs identical.  
-- **Interpretation**:  
-  - Confirms your re-analysis with edgeR essentially replicated the paper.  
-  - Small differences likely due to version changes (edgeR 3.16.5 in paper vs newer in your run), or filtering (mean CPM threshold).  
-
-**Venn Diagrams**: show ~2/3 overlap, which is strong given minor pipeline differences.
+**Volcano plot (volcano_Tutorial_mark_Published.png):**  
+- Shared DEGs (green) dominate in both tails  
+- Sig-only genes (red) cluster near cutoff thresholds  
 
 ---
 
-### 3. **Tutorial vs Published**
-- **Correlation**: Moderate (Pearson 0.76, Spearman 0.90).  
-- **Overlap**: ~59% DEGs shared.  
-- **Why lower?**  
-  - Paper used alignment-based counting (HISAT2 + HTSeq).  
-  - Tutorial used pseudo-alignment (kallisto + sleuth).  
-  - Statistical models differ (Wald test vs quasi-likelihood F-test).  
-  - Filtering thresholds differ, especially for low CPM genes.  
+## 2. Tutorial vs edgeR
 
-**Scatter Plot**: shows general trend agreement (logFC direction consistent), but more variance at extremes.
+**DEG overlap (Venn diagrams):**
+- UP: **89 shared**, 75 edgeR-only, 24 Tutorial-only → ~50% overlap  
+- DOWN: **69 shared**, 44 Tutorial-only, 15 edgeR-only → ~50% overlap  
 
----
+**Log2FC correlation (Tutorial_vs_edgeR_correlation_stats.txt):**
+- Pearson r = **0.91**, 95% CI [0.902–0.910]  
+- Spearman ρ = **0.96**  
+- p < 2.2e-16 → high consistency  
 
-## Biological Meaning
+**Sig-only diagnostics (Hist/CDF):**
+- EdgeR-only DEGs: n=67, **73.1%** have q < 0.1 in Tutorial  
+- Tutorial-only DEGs: n=38, **92.1%** have q < 0.1 in edgeR  
+➡️ Again, differences are **borderline significance calls**, not direction flips.  
 
-- **High Pearson/Spearman r** across all comparisons means the **direction and magnitude of log2FC are consistent** across pipelines.  
-- The **lower Jaccard overlap** (40–70%) is expected — DE calls depend on statistical thresholding and filtering, not just raw effect size.  
-- **Key conclusion**:  
-  - edgeR best reproduces the published pipeline.  
-  - Tutorial pipeline is a reasonable approximation but not identical.  
-  - Divergence highlights the sensitivity of DEG lists to **analysis choices**.
+**Volcano plot (volcano_Tutorial_mark_edgeR.png):**  
+- Shared DEGs clearly beyond thresholds  
+- Sig-only DEGs cluster at edges of cutoff lines  
 
 ---
 
-## Figures (examples)
+## 3. edgeR vs Published
 
-- **Venn Diagrams** → show DEG overlaps between methods.  
-- **Scatter Plots** → demonstrate strong linear correlation of log2FC values.  
-- **Volcano Plots** → highlight how many significant DEGs are shared vs unique to each method.  
+**DEG overlap (Venn diagrams):**
+- UP: **164 shared**, 84 edgeR-only, 104 Published-only → ~61% overlap  
+- DOWN: **144 shared**, 55 edgeR-only, 56 Published-only → ~72% overlap  
+
+**Log2FC correlation (edgeR_vs_Published_correlation_stats.txt):**
+- Pearson r = **0.994**, 95% CI [0.9939–0.9945]  
+- Spearman ρ = **0.998**  
+- p < 2.2e-16 → **nearly perfect correlation**  
+
+**Sig-only diagnostics (Hist/CDF):**
+- EdgeR-only DEGs: majority have Published q between 0.05–0.1  
+- Published-only DEGs: similar pattern  
+➡️ Most “sig-only” genes are **borderline threshold artifacts**.  
+
+**Volcano plot (volcano_edgeR_mark_Published.png):**  
+- Shared DEGs dominate  
+- Sig-only DEGs appear near FDR/logFC cutoffs  
 
 ---
 
-## Take-Home Messages
-1. **Consistency**: All pipelines agree on overall direction of regulation.  
-2. **edgeR vs Published**: Nearly identical — validates your re-analysis.  
-3. **Tutorial differences**: Mainly from pseudo-alignment vs alignment and statistical frameworks.  
-4. **Biological robustness**: Core biological findings are reproduced despite pipeline differences.  
+## 🔎 Diagnostics & Interpretation
+
+1. **Strong log2FC correlations** across all comparisons:
+   - Tutorial vs Published: r ≈ 0.91  
+   - Tutorial vs edgeR: r ≈ 0.91  
+   - edgeR vs Published: r ≈ 0.994  
+   → All pipelines estimate fold changes consistently.  
+
+2. **Overlap rates (50–72%) are below the expected 85%**, but:
+   - Volcano, histograms, and CDF plots show that “sig-only” genes usually lie near cutoffs.  
+   - These discrepancies arise from small differences in filtering, dispersion modeling, or FDR adjustments.  
+
+3. **Direction consistency:**  
+   - Almost no genes flip sign between methods.  
+   - Disagreement comes from **significance thresholding**, not opposite biological conclusions.  
+
+---
+
+## ✅ Conclusion
+
+- Despite moderate Venn overlap (<85%), the **biological conclusions are consistent**.  
+- Differences are mainly **statistical cutoff artifacts**, not conflicting fold-change directions.  
+- **edgeR vs Published shows the highest agreement (r=0.994, >70% overlap)**, confirming that the pipeline reproduces the published results.  
+- Tutorial pipeline shows slightly lower overlap with both edgeR and Published, reflecting differences in statistical modeling.  
+
+---
