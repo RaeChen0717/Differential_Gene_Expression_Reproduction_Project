@@ -1,0 +1,27 @@
+### Correlation between Tutorial and edgeR logFC ###
+
+-- Pearson --
+
+	Pearson's product-moment correlation
+
+data:  matched$logFC_A and matched$logFC_B
+t = 191.93, df = 8041, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.9020030 0.9098375
+sample estimates:
+      cor 
+0.9059978 
+
+
+-- Spearman --
+
+	Spearman's rank correlation rho
+
+data:  matched$logFC_A and matched$logFC_B
+S = 3673055550, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.9576431 
+

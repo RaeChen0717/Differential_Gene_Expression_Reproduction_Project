@@ -1,0 +1,27 @@
+### Correlation between Tutorial and Published logFC ###
+
+-- Pearson --
+
+	Pearson's product-moment correlation
+
+data:  matched$logFC_A and matched$logFC_B
+t = 103.18, df = 7742, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.7513617 0.7701223
+sample estimates:
+     cor 
+0.760901 
+
+
+-- Spearman --
+
+	Spearman's rank correlation rho
+
+data:  matched$logFC_A and matched$logFC_B
+S = 7416450497, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.9041811 
+
