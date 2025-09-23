@@ -16,7 +16,7 @@
 
 rm(list = ls())
 suppressPackageStartupMessages({
-  library(readr); library(readxl); library(dplyr); library(stringr)
+  library(readr); library(dplyr); library(stringr)
   library(ggplot2); library(biomaRt); library(VennDiagram); library(grid); library(openxlsx) 
   if (requireNamespace("futile.logger", quietly = TRUE)) {
     futile.logger::flog.threshold(futile.logger::FATAL, name = "VennDiagramLogger")
@@ -29,7 +29,7 @@ setwd('/Users/raechen/Downloads/exp15-16')
 
 tutorial_csv   <- "DGE_Tutorial/result/DGE_table_minusATR_vs_plusATR.csv"     
 edgeR_csv      <- "DGE_THIP/result/edgeR_exp15_vs_exp16_results.csv"          
-paper_xlsx     <- "elife-88198-fig7-data1-v1.xlsx"                  
+paper_csv      <- "published_data.csv"                  
 
 # Threshold：FDR<0.05 & |log2FC|>0.58
 qval_cut  <- 0.05
@@ -83,10 +83,10 @@ map_to_fbgn <- local({
 read_tutorial <- function(path) {
   df <- suppressMessages(read_csv(path, show_col_types = FALSE))
   tibble(
-    FBgn  = map_to_fbgn(df$V1),
+    FBgn  = as.character(df$flybase_gene_id),
     logFC = as.numeric(df$log2_b),
     qval  = as.numeric(df$qval)
-  ) %>% filter(!is.na(FBgn))
+  ) %>% filter(!is.na(FBgn), FBgn != "-")
 }
 
 read_edgeR <- function(path) {
@@ -100,11 +100,11 @@ read_edgeR <- function(path) {
 }
 
 read_published <- function(path) {
-    read_xlsx(path, sheet = 2) %>%
-      transmute(FBgn  = map_to_fbgn(Row.names),
-                logFC = as.numeric(logFC),
-                qval  = as.numeric(FDR)) %>%
-      filter(!is.na(FBgn))
+  read_csv(path, show_col_types = FALSE) %>%
+    transmute(FBgn  = as.character(flybase_gene_id),
+              logFC = as.numeric(logFC),
+              qval  = as.numeric(FDR)) %>%
+    filter(!is.na(FBgn), FBgn != "-")
 }
 
 # 3. split UP/DOWN 
@@ -489,7 +489,7 @@ diagnostics_summary <- function(dfA, dfB, setsA, setsB,
 # ========== read inputs ==========
 tut <- read_tutorial(tutorial_csv)
 edg <- read_edgeR(edgeR_csv)
-pub <- read_published(paper_xlsx)
+pub <- read_published(paper_csv)
 
 # background set: union of all FBgn lists
 background_all <- unique(c(tut$FBgn, edg$FBgn, pub$FBgn))

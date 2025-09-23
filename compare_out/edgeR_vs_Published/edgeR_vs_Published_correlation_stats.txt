@@ -5,13 +5,13 @@
 	Pearson's product-moment correlation
 
 data:  matched$logFC_A and matched$logFC_B
-t = 752.77, df = 6591, p-value < 2.2e-16
+t = 404.51, df = 8139, p-value < 2.2e-16
 alternative hypothesis: true correlation is not equal to 0
 95 percent confidence interval:
- 0.9939503 0.9945057
+ 0.9749695 0.9770290
 sample estimates:
       cor 
-0.9942346 
+0.9760211 
 
 
 -- Spearman --
@@ -19,9 +19,9 @@ sample estimates:
 	Spearman's rank correlation rho
 
 data:  matched$logFC_A and matched$logFC_B
-S = 93453582, p-value < 2.2e-16
+S = 626043778, p-value < 2.2e-16
 alternative hypothesis: true rho is not equal to 0
 sample estimates:
       rho 
-0.9980434 
+0.9930382 
 
