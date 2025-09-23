@@ -4,11 +4,11 @@ library(biomaRt)
 library(devtools)
 library('ggplot2')
 
-setwd('/Users/raechen/Downloads/exp15-16/DGE_TranscriptLvl')
-base_dir <- '/Users/raechen/Downloads/exp15-16/DGE_TranscriptLvl/Kallisto_out_ZT10'
+setwd('/Users/raechen/Downloads/exp15-16/DGE_Tutorial')
+base_dir <- '/Users/raechen/Downloads/exp15-16/DGE_Tutorial/Kallisto_out_ZT10'
 sample_id <- dir(file.path(base_dir))
 kal_dirs <- sapply(sample_id, function(id) file.path(base_dir, id))
-s2c <- read.table("SC_minusATR_vs_plusATR.txt", header = TRUE, stringsAsFactors=FALSE)
+s2c <- read.table("Kallisto_out_ZT10/SC_minusATR_vs_plusATR.txt", header = TRUE, stringsAsFactors=FALSE)
 s2c <- dplyr::mutate(s2c, path = kal_dirs)
 
 s2c
@@ -44,6 +44,8 @@ p_val_reduce<-p_val_sort[c("target_id","pval","qval", "log2_b")] # extract only 
 DGE_all<-merge(DGE_table, p_val_reduce, by.x=1 , by.y="target_id") # megrge with gene expression and p, q values
 DGE_all<-na.omit(DGE_all)
 DGE_all<-(DGE_all[order(-DGE_all$log2_b),])
+# Rename V1 column to ext_gene
+names(DGE_all)[2] <- "ext_gene"
 write.csv(DGE_all, 'DGE_table_minusATR_vs_plusATR.csv')
 
 sig_level=0.1
